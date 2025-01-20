@@ -10,7 +10,7 @@ namespace BARSReaderGUI
     {
         public uint crcHash;
         public uint amtaOffset;
-        public uint assetOffset;
+        public int assetOffset;
         public string assetName;
         public string assetType;
         public bool isPrefetch = false;

@@ -97,7 +97,7 @@ namespace BARSReaderGUI
                 for (int i = 0; i < assetcount; i++)
                 {
                     audioAssets[i].amtaOffset = reader.ReadUInt();
-                    audioAssets[i].assetOffset = reader.ReadUInt();
+                    audioAssets[i].assetOffset = reader.ReadInt();
                 }
 
                 // Read asset's amta data.
@@ -120,6 +120,8 @@ namespace BARSReaderGUI
                 // TODO: Explain this particular section better.
                 for (int i = 0; i < audioAssets.Count; i++)
                 {
+                    if (audioAssets[i].assetOffset < 0)
+                        continue;
                     reader.Position = audioAssets[i].assetOffset;
 
                     audioAssets[i].assetType = reader.ReadSizedString(4);
@@ -329,7 +331,8 @@ namespace BARSReaderGUI
                         Directory.CreateDirectory(outDir);
                         String fileName = outDir + "\\" + asset.amtaData.assetName + "." + asset.assetType;
                         using var writer = new BinaryWriter(File.Create(fileName));
-                        writer.Write(asset.assetData);
+                        if (asset.assetData != null)
+                            writer.Write(asset.assetData);
                     });
                 }
 
